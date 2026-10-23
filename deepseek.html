@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkyLoop</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Иконки соцсетей (подключение шрифта) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ================= ШАПКА САЙТА (HEADER) ================= -->
+    <header class="header">
+        <div class="container header-container">
+            <!-- Логотип-заглушка -->
+            <div class="logo-placeholder">
+                <div class="img-stub">X</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="#">Каталог</a>
+                <a href="#">Как это работает</a>
+                <a href="#">Правила аренды</a>
+                <a href="#">Поддержка</a>
+            </nav>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Поиск">
+                <button class="search-btn">🔍</button>
+            </div>
+
+            <button class="btn-profile">Личный кабинет</button>
+        </div>
+    </header>
+
+    <!-- ================= КОНТЕНТ: ВАРИАНТ 1 (ГЛАВНАЯ) ================= -->
+    <main class="main-section">
+        <div class="container">
+            
+            <!-- Блок Hero -->
+            <section class="hero-section">
+                <div class="hero-image img-stub">X</div>
+                <div class="hero-text">
+                    <h1>Аренда дизайнерской одежды</h1>
+                    <p>Образы для особых случаев без покупки</p>
+                    <button class="btn-primary">Смотреть каталог</button>
+                </div>
+            </section>
+
+            <!-- Блок Новинки -->
+            <section class="new-arrivals">
+                <h2>Новинки</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-img img-stub">X</div>
+                        <p><strong>Платье</strong><br>Бренд - 2.800 ₽ в сутки</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-img img-stub">X</div>
+                        <p><strong>Футболка</strong><br>Бренд - 2.300 ₽ в сутки</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-img img-stub">X</div>
+                        <p><strong>Джинсы</strong><br>Бренд - 2.500 ₽ в сутки</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-img img-stub">X</div>
+                        <p><strong>Костюм</strong><br>Бренд - 1.800 ₽ в сутки</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Блок Как это работает -->
+            <section class="how-it-works">
+                <h2>Как это работает?</h2>
+                <div class="steps-grid">
+                    <button class="step-btn">1. Выбор</button>
+                    <button class="step-btn">2. Бронь</button>
+                    <button class="step-btn">3. Доставка</button>
+                    <button class="step-btn">4. Возврат</button>
+                </div>
+                <div class="info-grid">
+                    <div class="info-box">Преимущества: страховка, химчистка, курьер</div>
+                    <div class="info-box">Бренды-партнеры, отзывы клиентов</div>
+                </div>
+            </section>
+
+            <!-- ================= КОНТЕНТ: ВАРИАНТ 2 (КАРТОЧКА ТОВАРА) ================= -->
+            <!-- Раскомментируйте этот блок и закомментируйте верхний main, чтобы увидеть карточку товара -->
+            <!-- 
+            <section class="product-page">
+                <h2>Карточка товара</h2>
+                <div class="product-layout">
+                    <div class="product-image img-stub">X</div>
+                    <div class="booking-sidebar">
+                        <h3>Зона бронирования</h3>
+                        <div class="date-row">
+                            <div class="date-input">
+                                <label>Дата начала</label>
+                                <input type="text" placeholder="дд.мм.гггг">
+                            </div>
+                            <div class="date-input">
+                                <label>Дата конца</label>
+                                <input type="text" placeholder="дд.мм.гггг">
+                            </div>
+                        </div>
+                        <div class="size-input">
+                            <label>Размер</label>
+                            <select>
+                                <option>Выберите размер</option>
+                            </select>
+                        </div>
+                        <div class="price-input">
+                            <input type="text" value="1500 ₽ / сутки" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <p><strong>Дизайнерская футболка</strong><br>Бренд: Number nine</p>
+                    <div class="info-grid product-info">
+                        <div class="info-box">Описание товара, условия аренды и информация о состоянии вещи</div>
+                        <div class="info-box">Доставка и возврат</div>
+                    </div>
+                </div>
+            </section>
+            -->
+
+        </div>
+    </main>
+
+    <!-- ================= ПОДВАЛ (FOOTER) ================= -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="logo-placeholder footer-logo">
+                <div class="img-stub">X</div>
+                <span>LinkyLoop</span>
+            </div>
+            
+            <div class="footer-links">
+                <a href="#">Контакты</a>
+                <a href="#">Правила аренды</a>
+                <a href="#">Политика безопасности</a>
+            </div>
+
+            <div class="social-links">
+                <span>Соцсети</span>
+                <div class="icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-telegram"></i>
+                    <i class="fab fa-tiktok"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
