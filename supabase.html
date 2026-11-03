@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase Profiles</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        input, button { padding: 8px; margin: 5px 0; }
+        #message { margin-top: 10px; color: green; }
+    </style>
+</head>
+<body>
+
+    <h2>Добавить профиль</h2>
+    <form id="addForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="provider" placeholder="Provider (например, email)" value="email">
+        <button type="submit">Добавить</button>
+    </form>
+    <div id="message"></div>
+
+    <h2>Список профилей</h2>
+    <table id="profilesTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Provider</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- 1. Подключаем Supabase через CDN (UMD сборка) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // 2. Инициализация клиента
+        const SUPABASE_URL = 'https://yuaojqwoauarsgdsyikn.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_Hl5TiOhdgKr3dh5U0mlRJA_ImQAZgdO';
+
+        // Из глобальной переменной supabase достаем createClient
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 3. Функция для загрузки и отображения данных
+        async function loadProfiles() {
+            const tbody = document.querySelector('#profilesTable tbody');
+            tbody.innerHTML = ''; // Очистить перед загрузкой
+
+            const { data, error } = await _supabase
+                .from('profiles')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                alert('Не удалось загрузить данные: ' + error.message);
+                return;
+            }
+
+            data.forEach(profile => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${profile.id}</td>
+                    <td>${profile.username || '—'}</td>
+                    <td>${profile.email || '—'}</td>
+                    <td>${profile.provider || '—'}</td>
+                    <td>${new Date(profile.created_at).toLocaleString()}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 4. Обработка формы добавления
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = 'Отправка...';
+
+            const newProfile = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                provider: document.getElementById('provider').value,
+                // id и created_at обычно генерируются автоматически на стороне Supabase
+            };
+
+            const { data, error } = await _supabase
+                .from('profiles')
+                .insert([newProfile])
+                .select(); // Если хотите сразу получить вставленную запись
+
+            if (error) {
+                console.error('Ошибка вставки:', error);
+                messageDiv.textContent = 'Ошибка: ' + error.message;
+                messageDiv.style.color = 'red';
+            } else {
+                messageDiv.textContent = 'Профиль успешно добавлен!';
+                messageDiv.style.color = 'green';
+                document.getElementById('addForm').reset();
+                loadProfiles(); // Обновить таблицу
+            }
+        });
+
+        // 5. Загружаем данные при старте страницы
+        loadProfiles();
+    </script>
+</body>
+</html>
