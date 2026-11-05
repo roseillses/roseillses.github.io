@@ -40,6 +40,24 @@
   </style>
 </head>
 <body>
+<button id="logoutBtn">Выйти из аккаунта</button>
+
+import { getAuth, signOut } from "firebase/auth";
+
+const auth = getAuth();
+const logoutButton = document.getElementById('logoutBtn');
+
+logoutButton.addEventListener('click', () => {
+  signOut(auth)
+    .then(() => {
+      console.log("Вы успешно вышли!");
+      // Здесь можно перенаправить пользователя (например, на страницу входа)
+      // window.location.href = "login.html";
+    })
+    .catch((error) => {
+      console.error("Ошибка при выходе из аккаунта:", error);
+    });
+});
 
   <button id="loginBtn">Войти через GitHub</button>
 
