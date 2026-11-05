@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход через GitHub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #24292e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button:hover {
+      background-color: #2c3137;
+    }
+    #userCard {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="loginBtn">Войти через GitHub</button>
+
+  <div id="userCard" style="display: none;">
+    <h2>Привет, <span id="username"></span>!</h2>
+    <p>Вы успешно вошли в приложение.</p>
+  </div>
+
+  <script type="module">
+    // Импортируем Firebase App и Auth из CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Конфигурация вашего проекта
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRbQUs_sX9y_Oz6GI-uiRbnBbov_YTZYo",
+      authDomain: "fjfjf-bf120.firebaseapp.com",
+      projectId: "fjfjf-bf120",
+      storageBucket: "fjfjf-bf120.firebasestorage.app",
+      messagingSenderId: "313859445563",
+      appId: "1:313859445563:web:1ad75f62d5da494c5ddd1e",
+      measurementId: "G-W0YVNTBBMG"
+    };
+
+    // Инициализируем Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GithubAuthProvider();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const userCard = document.getElementById('userCard');
+    const usernameSpan = document.getElementById('username');
+
+    loginBtn.addEventListener('click', () => {
+      // Открываем всплывающее окно для авторизации
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const user = result.user;
+          usernameSpan.textContent = user.displayName || user.email || "Пользователь";
+          loginBtn.style.display = 'none';
+          userCard.style.display = 'block';
+        })
+        .catch((error) => {
+          console.error("Ошибка входа:", error);
+          alert("Не удалось войти: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
