@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Cute GitHub Login</title>
+  <title>Cute Login</title>
   <style>
     body {
       background-color: #ffe5ec; /* Нежно-розовый фон */
@@ -72,34 +72,43 @@
 <div class="card">
   <h2>Привет! 💕</h2>
   <button id="loginBtn">Войти через GitHub ✨</button>
+  <button id="googleLoginBtn">Войти через Google 🌟</button>
   <button id="logoutBtn" style="display:none;">Выйти 💖</button>
 </div>
 
 <!-- Подключаем SDK через ESM-модули -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-  import { getAuth, signInWithPopup, GithubAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+  import { getAuth, signInWithPopup, GithubAuthProvider, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
   // Конфигурация вашего проекта
   const firebaseConfig = {
-    apiKey:  "AIzaSyDRbQUs_sX9y_Oz6GI-uiRbnBbov_YTZYo", // Вставьте сюда ваш API Key
+    apiKey:  "AIzaSyDRbQUs_sX9y_Oz6GI-uiRbnBbov_YTZYo",
     authDomain: "fjfjf-bf120.firebaseapp.com",
     projectId: "fjfjf-bf120",
     storageBucket: "fjfjf-bf120.appspot.com",
     messagingSenderId: "313859445563",
-    appId: "1:313859445563:web:1ad75f62d5da494c5ddd1e"// Вставьте сюда ваш App ID
+    appId: "1:313859445563:web:1ad75f62d5da494c5ddd1e"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const provider = new GithubAuthProvider();
+  
+  const githubProvider = new GithubAuthProvider();
+  const googleProvider = new GoogleAuthProvider();
 
   const loginBtn = document.getElementById('loginBtn');
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // Логика входа
+  // Логика входа GitHub
   loginBtn.addEventListener('click', () => {
-    signInWithPopup(auth, provider).catch(err => console.error(err));
+    signInWithPopup(auth, githubProvider).catch(err => console.error(err));
+  });
+
+  // Логика входа Google
+  googleLoginBtn.addEventListener('click', () => {
+    signInWithPopup(auth, googleProvider).catch(err => console.error(err));
   });
 
   // Логика выхода
@@ -111,9 +120,11 @@
   onAuthStateChanged(auth, (user) => {
     if (user) {
       loginBtn.style.display = 'none';
+      googleLoginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
     } else {
       loginBtn.style.display = 'inline-block';
+      googleLoginBtn.style.display = 'inline-block';
       logoutBtn.style.display = 'none';
     }
   });
