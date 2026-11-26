@@ -64,7 +64,6 @@
       box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
       background-color: #fff0f3;
     }
-    /* Стили для летающих сердечек */
     .heart {
       position: absolute;
       color: #ff4d6d;
@@ -88,32 +87,37 @@
 <body>
 
 <div class="card">
-  <!-- Добавили id для динамического приветствия -->
   <h2 id="welcomeHeader">Привет! 💕</h2>
   
-  <!-- Форма входа по почте -->
   <div id="emailForm">
     <input type="email" id="emailInput" placeholder="Электронная почта 📧">
     <input type="password" id="passwordInput" placeholder="Пароль 🔑">
-    <button id="emailLoginBtn">Войти по почте 🌸</button>
+    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <button id="emailLoginBtn">Войти по почте 🌸</button>
+      <button id="emailRegisterBtn">Создать аккаунт 🎀</button>
+    </div>
   </div>
 
-  <!-- Эти кнопки видны ДО входа -->
   <button id="loginBtn">Войти через GitHub ✨</button>
   <button id="googleLoginBtn">Войти через Google 🌟</button>
-  
-  <!-- Эта кнопка появляется ПОСЛЕ входа -->
   <button id="logoutBtn" style="display:none;">Выйти 💖</button>
 </div>
 
-<!-- Подключаем SDK через ESM-модули -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-  import { getAuth, signInWithPopup, GithubAuthProvider, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+  import { 
+    getAuth, 
+    signInWithPopup, 
+    GithubAuthProvider, 
+    GoogleAuthProvider, 
+    signOut, 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword 
+  } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-  // Конфигурация вашего проекта
   const firebaseConfig = {
-    apiKey:  "AIzaSyDRbQUs_sX9y_Oz6GI-uiRbnBbov_YTZYo",
+    apiKey: "AIzaSyDRbQUs_sX9y_Oz6GI-uiRbnBbov_YTZYo",
     authDomain: "fjfjf-bf120.firebaseapp.com",
     projectId: "fjfjf-bf120",
     storageBucket: "fjfjf-bf120.appspot.com",
@@ -136,8 +140,17 @@
   const emailInput = document.getElementById('emailInput');
   const passwordInput = document.getElementById('passwordInput');
   const emailLoginBtn = document.getElementById('emailLoginBtn');
+  const emailRegisterBtn = document.getElementById('emailRegisterBtn');
 
-  // Логика входа Email/Password
+  // Регистрация нового аккаунта
+  emailRegisterBtn.addEventListener('click', () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .catch(err => console.error("Ошибка регистрации:", err));
+  });
+
+  // Вход по почте
   emailLoginBtn.addEventListener('click', () => {
     const email = emailInput.value;
     const password = passwordInput.value;
@@ -145,38 +158,31 @@
       .catch(err => console.error("Ошибка входа по почте:", err));
   });
 
-  // Логика входа GitHub
+  // Вход через GitHub/Google
   loginBtn.addEventListener('click', () => {
     signInWithPopup(auth, githubProvider).catch(err => console.error(err));
   });
 
-  // Логика входа Google
   googleLoginBtn.addEventListener('click', () => {
     signInWithPopup(auth, googleProvider).catch(err => console.error(err));
   });
 
-  // Логика выхода
+  // Выход из аккаунта
   logoutBtn.addEventListener('click', () => {
     signOut(auth).catch(err => console.error(err));
   });
 
-  // Отслеживание состояния пользователя
+  // Отслеживание состояния
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Получаем имя или почту для приветствия
       const displayName = user.displayName || user.email || 'Друг';
       welcomeHeader.textContent = `Привет, ${displayName}! 💕`;
-
-      // Скрываем элементы ввода и кнопки входа, показываем кнопку выхода
       emailForm.style.display = 'none';
       loginBtn.style.display = 'none';
       googleLoginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
     } else {
-      // Сбрасываем заголовок
       welcomeHeader.textContent = 'Привет! 💕';
-
-      // Показываем элементы ввода и кнопки входа, скрываем кнопку выхода
       emailForm.style.display = 'block';
       loginBtn.style.display = 'inline-block';
       googleLoginBtn.style.display = 'inline-block';
@@ -184,7 +190,7 @@
     }
   });
 
-  // Генератор летающих сердечек
+  // Анимация сердечек
   function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
