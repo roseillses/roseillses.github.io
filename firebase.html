@@ -88,9 +88,10 @@
 <body>
 
 <div class="card">
-  <h2>Привет! 💕</h2>
+  <!-- Добавили id для динамического приветствия -->
+  <h2 id="welcomeHeader">Привет! 💕</h2>
   
-  <!-- Форма входа по почте (скрывается после входа) -->
+  <!-- Форма входа по почте -->
   <div id="emailForm">
     <input type="email" id="emailInput" placeholder="Электронная почта 📧">
     <input type="password" id="passwordInput" placeholder="Пароль 🔑">
@@ -126,6 +127,7 @@
   const githubProvider = new GithubAuthProvider();
   const googleProvider = new GoogleAuthProvider();
 
+  const welcomeHeader = document.getElementById('welcomeHeader');
   const loginBtn = document.getElementById('loginBtn');
   const googleLoginBtn = document.getElementById('googleLoginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
@@ -161,12 +163,19 @@
   // Отслеживание состояния пользователя
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      // Получаем имя или почту для приветствия
+      const displayName = user.displayName || user.email || 'Друг';
+      welcomeHeader.textContent = `Привет, ${displayName}! 💕`;
+
       // Скрываем элементы ввода и кнопки входа, показываем кнопку выхода
       emailForm.style.display = 'none';
       loginBtn.style.display = 'none';
       googleLoginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
     } else {
+      // Сбрасываем заголовок
+      welcomeHeader.textContent = 'Привет! 💕';
+
       // Показываем элементы ввода и кнопки входа, скрываем кнопку выхода
       emailForm.style.display = 'block';
       loginBtn.style.display = 'inline-block';
