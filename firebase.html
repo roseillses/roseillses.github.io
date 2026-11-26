@@ -28,6 +28,24 @@
       color: #ff4d6d;
       margin-bottom: 20px;
     }
+    input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border: 2px solid #ffb3c1;
+      border-radius: 50px;
+      outline: none;
+      font-family: inherit;
+      color: #ff4d6d;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    input:focus {
+      border-color: #ff4d6d;
+      box-shadow: 0 0 8px rgba(255, 77, 109, 0.2);
+    }
     button {
       background-color: #ffffff;
       border: 2px solid #ffb3c1;
@@ -71,6 +89,14 @@
 
 <div class="card">
   <h2>Привет! 💕</h2>
+  
+  <!-- Форма входа по почте (скрывается после входа) -->
+  <div id="emailForm">
+    <input type="email" id="emailInput" placeholder="Электронная почта 📧">
+    <input type="password" id="passwordInput" placeholder="Пароль 🔑">
+    <button id="emailLoginBtn">Войти по почте 🌸</button>
+  </div>
+
   <!-- Эти кнопки видны ДО входа -->
   <button id="loginBtn">Войти через GitHub ✨</button>
   <button id="googleLoginBtn">Войти через Google 🌟</button>
@@ -82,7 +108,7 @@
 <!-- Подключаем SDK через ESM-модули -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-  import { getAuth, signInWithPopup, GithubAuthProvider, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+  import { getAuth, signInWithPopup, GithubAuthProvider, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
   // Конфигурация вашего проекта
   const firebaseConfig = {
@@ -103,6 +129,19 @@
   const loginBtn = document.getElementById('loginBtn');
   const googleLoginBtn = document.getElementById('googleLoginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
+  
+  const emailForm = document.getElementById('emailForm');
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const emailLoginBtn = document.getElementById('emailLoginBtn');
+
+  // Логика входа Email/Password
+  emailLoginBtn.addEventListener('click', () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    signInWithEmailAndPassword(auth, email, password)
+      .catch(err => console.error("Ошибка входа по почте:", err));
+  });
 
   // Логика входа GitHub
   loginBtn.addEventListener('click', () => {
@@ -122,12 +161,14 @@
   // Отслеживание состояния пользователя
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Скрываем кнопки входа, показываем кнопку выхода
+      // Скрываем элементы ввода и кнопки входа, показываем кнопку выхода
+      emailForm.style.display = 'none';
       loginBtn.style.display = 'none';
       googleLoginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
     } else {
-      // Показываем кнопки входа, скрываем кнопку выхода
+      // Показываем элементы ввода и кнопки входа, скрываем кнопку выхода
+      emailForm.style.display = 'block';
       loginBtn.style.display = 'inline-block';
       googleLoginBtn.style.display = 'inline-block';
       logoutBtn.style.display = 'none';
